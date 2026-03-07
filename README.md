@@ -1,253 +1,90 @@
 # CodeDNA
 
-**Decode the DNA of your code.**
+**CodeDNA** is a tool that analyzes source code and reveals its **complexity, health, bugs, and potential security risks**.  
+Users can either paste their code manually or provide a **GitHub repository link**, and the system scans the code to generate a simple report.
 
-CodeDNA is an intelligent code analysis platform that scans manually submitted code or GitHub repositories to evaluate **code complexity, health, security risks, and hidden malicious patterns**. It helps developers understand the structural quality of their code and identify issues buried deep within large codebases.
-
----
-
-## Overview
-
-Modern software projects often contain thousands of lines of code, making it difficult to identify structural issues, hidden bugs, or suspicious logic. CodeDNA analyzes the internal patterns of code to generate insights about its quality and safety.
-
-By combining **static code analysis, complexity metrics, and security pattern detection**, CodeDNA provides developers with a clear report about the health of their code.
+The goal of CodeDNA is to help developers quickly understand the **quality and safety of their code**, especially in large projects with thousands of lines.
 
 ---
 
-## Features
+## Inspiration
 
-### Code Input
-Developers can submit code in two ways:
+Large codebases often hide bugs, inefficient logic, or suspicious code patterns. Developers usually need to manually review code to find these issues, which can be time-consuming.
 
-- Paste manually written code
-- Provide a GitHub repository link
+We were inspired by the idea that **code has patterns just like DNA**. By analyzing those patterns, we can understand the structure and health of a program.
 
-The system automatically retrieves and analyzes the codebase.
+This idea led to the creation of **CodeDNA**, a system that scans and evaluates code automatically.
 
 ---
 
-### Code Complexity Analysis
+## What CodeDNA Does
 
-CodeDNA evaluates complexity using metrics such as **Cyclomatic Complexity**:
+CodeDNA analyzes code and generates insights such as:
 
-$$
-M = E - N + 2P
-$$
+- **Code Complexity Analysis**  
+  Measures how complex the code structure is.
 
-Where:
+- **Code Health Check**  
+  Evaluates readability, structure, and maintainability.
 
-- \(M\) = Cyclomatic complexity  
-- \(E\) = Number of edges in the control flow graph  
-- \(N\) = Number of nodes  
-- \(P\) = Number of connected components  
+- **Bug Detection**  
+  Identifies possible logical mistakes or risky coding practices.
 
-This helps determine how difficult a codebase is to maintain or test.
+- **Malware / Suspicious Code Detection**  
+  Finds hidden or unusual code patterns that may indicate malicious logic.
 
----
-
-### Code Health Evaluation
-
-The platform analyzes maintainability factors including:
-
-- Code readability
-- Function size
-- Naming conventions
-- Code duplication
-- Modular structure
-
-It generates a **Code Health Score** that reflects overall maintainability.
+- **Visual Report**  
+  Displays scores for code health, complexity, and security risk.
 
 ---
 
-### Bug Detection
+## How It Works
 
-CodeDNA scans for potential issues such as:
-
-- Logical errors
-- Unused variables
-- Risky operations
-- Inefficient code patterns
-
-This helps developers identify bugs before deployment.
+1. The user submits code by pasting it or entering a GitHub repository link.
+2. The system retrieves and processes the code.
+3. Static analysis tools examine the code structure.
+4. The platform calculates complexity, detects bugs, and scans for suspicious patterns.
+5. Results are displayed as a simple report.
 
 ---
 
-### Malware Pattern Detection
+## Technologies Used
 
-In large repositories, malicious logic can sometimes be hidden deep inside files. CodeDNA detects suspicious patterns including:
-
-- Obfuscated code
-- Suspicious API calls
-- Unauthorized data access
-- Hidden backdoor logic
-
----
-
-### Visual Dashboard
-
-After analysis, CodeDNA generates a clear report including:
-
-- Code Health Score
-- Complexity Score
-- Bug Risk Level
-- Security Risk Level
-
-This allows developers to quickly understand the quality of their codebase.
-
----
-
-## Tech Stack
-
-**Frontend**
-
-- React.js  
-- Tailwind CSS  
-
-**Backend**
-
-- Node.js  
-- Express.js  
-
-**Code Analysis Engine**
-
-- Python  
-- Abstract Syntax Tree (AST) parsing  
-- Static code analysis techniques  
-
-**Database**
-
-- MongoDB  
-
-**Integration**
-
+- JavaScript
+- Python
+- React.js
+- Node.js
+- Express.js
+- Tailwind CSS
+- MongoDB
 - GitHub API
+- Static Code Analysis
+- AST (Abstract Syntax Tree) Parsing
 
 ---
 
-## Architecture
+## What We Learned
 
-Workflow of the system:
+While building this project we learned about:
 
-1. User submits code or GitHub repository link
-2. Backend retrieves the source files
-3. Code is parsed using AST-based analysis
-4. Complexity and health metrics are calculated
-5. Security patterns are scanned
-6. Results are stored and displayed in a dashboard
-
----
-
-## Installation
-
-### Clone the repository
-
-```bash
-git clone https://github.com/your-username/codedna.git
-cd codedna
-```
-
-### Install dependencies
-
-Frontend:
-
-```bash
-cd client
-npm install
-```
-
-Backend:
-
-```bash
-cd server
-npm install
-```
-
----
-
-### Run the application
-
-Start backend:
-
-```bash
-npm start
-```
-
-Start frontend:
-
-```bash
-npm run dev
-```
-
-The application will run on:
-
-```
-http://localhost:3000
-```
-
----
-
-## Example Output
-
-Example report generated by CodeDNA:
-
-```
-Code Health Score: 82 / 100
-Complexity Level: Moderate
-Potential Bugs: 6
-Security Risk: Low
-```
-
----
-
-## Challenges
-
-During development we faced several challenges:
-
-- Efficiently analyzing large repositories
-- Handling different programming structures
-- Detecting suspicious code patterns without excessive false positives
-- Integrating GitHub repositories with varying file structures
+- Static code analysis
+- Code complexity metrics
+- GitHub API integration
+- Full-stack web development
+- Detecting patterns in large codebases
 
 ---
 
 ## Future Improvements
 
-Planned features include:
+Some features we plan to add in the future:
 
-- AI-powered bug prediction
+- AI-based bug prediction
+- Support for more programming languages
 - Automated code improvement suggestions
-- Multi-language support
-- CI/CD pipeline integration
-- Developer team compatibility analysis
-- Advanced security scanning
+- Integration with CI/CD pipelines
 
 ---
-
-## Contributing
-
-Contributions are welcome.
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Submit a pull request
-
----
-
 ## License
 
 This project is licensed under the MIT License.
-
----
-
-## Acknowledgements
-
-We thank the open-source community and developers whose tools and libraries made this project possible.
-
----
-
-## Contact
-
-For questions or collaboration:
-
-GitHub: https://github.com/your-username
