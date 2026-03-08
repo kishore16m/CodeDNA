@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>CodeDNA</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+font-family:'Inter',sans-serif;
+background:#0f172a;
+color:white;
+margin:0;
+}
+
+.header{
+background:#020617;
+padding:20px 40px;
+font-size:24px;
+font-weight:600;
+border-bottom:1px solid #334155;
+letter-spacing:0.5px;
+}
+
+.container{
+padding:40px;
+max-width:1100px;
+margin:auto;
+}
+
+.card{
+background:#1e293b;
+padding:25px;
+border-radius:10px;
+margin-bottom:30px;
+box-shadow:0 6px 20px rgba(0,0,0,0.3);
+}
+
+button{
+margin-top:15px;
+padding:10px 20px;
+background:#3b82f6;
+border:none;
+border-radius:6px;
+color:white;
+font-size:14px;
+font-weight:500;
+cursor:pointer;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+#editor{
+height:300px;
+border-radius:8px;
+border:1px solid #334155;
+}
+
+.result{
+margin-top:20px;
+padding:20px;
+background:#020617;
+border-radius:8px;
+font-size:14px;
+}
+
+.bar{
+height:18px;
+border-radius:6px;
+margin-top:6px;
+}
+
+input{
+width:100%;
+padding:10px;
+border-radius:6px;
+border:none;
+font-family:'Inter';
+}
+
+</style>
+
+<script src="https://unpkg.com/monaco-editor@0.34.1/min/vs/loader.js"></script>
+
+</head>
+
+<body>
+
+<div class="header">
+CodeDNA Developer Code Analyzer
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Code Editor</h2>
+
+<div id="editor"></div>
+
+<button onclick="analyze()">Analyze Code</button>
+
+</div>
+
+<div class="card">
+
+<h2>GitHub Repository Scan</h2>
+
+<input id="repo" placeholder="https://github.com/user/repo">
+
+<button onclick="scanRepo()">Scan Repository</button>
+
+</div>
+
+<div id="result" class="result">
+Results will appear here
+</div>
+
+</div>
+
+<script>
+
+let editor;
+
+require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.34.1/min/vs' }});
+
+require(["vs/editor/editor.main"], function () {
+
+editor = monaco.editor.create(document.getElementById("editor"), {
+value: `function example(){
+ for(let i=0;i<10;i++){
+  if(i>5){
+   console.log(i)
+  }
+ }
+}`,
+language: "javascript",
+theme: "vs-dark"
+});
+
+});
+
+async function analyze(){
+
+const code = editor.getValue()
+
+const response = await fetch("/analyze",{
+method:"POST",
+body:code
+})
+
+const data = await response.json()
+
+document.getElementById("result").innerHTML = `
+
+<h2>Code Health Dashboard</h2>
+
+Lines: ${data.lines}<br>
+Loops: ${data.loops}<br>
+Conditions: ${data.conditions}<br><br>
+
+Complexity
+<div class="bar" style="width:${data.complexity*30}px;background:#f59e0b"></div>
+
+Security Risks
+<div class="bar" style="width:${data.risks*40}px;background:#ef4444"></div>
+
+Health Score
+<div class="bar" style="width:${data.health*3}px;background:#22c55e"></div>
+
+<br>
+
+Health Score: <b style="color:${data.color}">${data.health}</b><br>
+Status: <b style="color:${data.color}">${data.status}</b>
+
+`
+
+}
+
+async function scanRepo(){
+
+const repo = document.getElementById("repo").value
+
+const response = await fetch("/github",{
+method:"POST",
+body:repo
+})
+
+const data = await response.json()
+
+document.getElementById("result").innerHTML = `
+
+<h2>Repository Scan</h2>
+
+Repository: ${data.repository}<br>
+Files Scanned: ${data.files_scanned}
+
+`
+
+}
+
+</script>
+
+</body>
+
+</html>
