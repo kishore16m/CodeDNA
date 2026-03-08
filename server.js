@@ -7,6 +7,12 @@ const server = http.createServer((req, res) => {
     if (req.method === "GET" && req.url === "/") {
 
         fs.readFile("index.html", (err, data) => {
+            if (err) {
+                res.writeHead(500);
+                res.end("Error loading page");
+                return;
+            }
+
             res.writeHead(200, { "Content-Type": "text/html" });
             res.end(data);
         });
@@ -78,54 +84,72 @@ const server = http.createServer((req, res) => {
 
             const repoUrl = body.trim();
 
-            const parts = repoUrl.replace("https://github.com/","").split("/");
-            const user = parts[0];
-            const repo = parts[1];
+            try {
 
-            const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents`;
+                const parts = repoUrl.replace("https://github.com/","").split("/");
+                const user = parts[0];
+                const repo = parts[1];
 
-            const options = {
-                headers: { "User-Agent": "codedna" }
-            };
+                const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents`;
 
-            https.get(apiUrl, options, (apiRes) => {
+                const options = {
+                    headers: { "User-Agent": "codedna" }
+                };
 
-                let data = "";
+                https.get(apiUrl, options, (apiRes) => {
 
-                apiRes.on("data", chunk => {
-                    data += chunk;
-                });
+                    let data = "";
 
-                apiRes.on("end", () => {
-
-                    const files = JSON.parse(data);
-
-                    let fileCount = 0;
-
-                    files.forEach(file => {
-                        if(file.type === "file"){
-                            fileCount++;
-                        }
+                    apiRes.on("data", chunk => {
+                        data += chunk;
                     });
 
-                    const result = JSON.stringify({
-                        repository: repo,
-                        files_scanned: fileCount
-                    });
+                    apiRes.on("end", () => {
 
-                    res.writeHead(200, { "Content-Type": "application/json" });
-                    res.end(result);
+                        const files = JSON.parse(data);
+
+                        let fileCount = 0;
+
+                        files.forEach(file => {
+                            if (file.type === "file") {
+                                fileCount++;
+                            }
+                        });
+
+                        const result = JSON.stringify({
+                            repository: repo,
+                            files_scanned: fileCount
+                        });
+
+                        res.writeHead(200, { "Content-Type": "application/json" });
+                        res.end(result);
+
+                    });
 
                 });
 
-            });
+            } catch (error) {
+
+                res.writeHead(500);
+                res.end("Error scanning repository");
+
+            }
 
         });
 
     }
 
+    else {
+
+        res.writeHead(404);
+        res.end("Not Found");
+
+    }
+
 });
 
-server.listen(5000, () => {
-    console.log("Server running at http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+
+server.listen(PORT, "0.0.0.0", () => {
+    console.log("Server running on port " + PORT);
 });
